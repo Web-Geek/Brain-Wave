@@ -21,6 +21,62 @@
   -webkit-box-shadow: 8px 8px 21px #cfcfcf, -8px -8px 21px #ffffff;
           box-shadow: 8px 8px 21px #cfcfcf, -8px -8px 21px #ffffff;
   border: none;
+  position: relative;
+}
+
+.container .card .layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border-radius: 22px;
+  z-index: 3;
+  background: #eeeeee;
+  -webkit-box-shadow: -5px -5px 20px #ffffff, 10px 10px 20px #cfcfcf, inset -5px -5px 20px #ffffff, inset 10px 10px 20px #cfcfcf;
+          box-shadow: -5px -5px 20px #ffffff, 10px 10px 20px #cfcfcf, inset -5px -5px 20px #ffffff, inset 10px 10px 20px #cfcfcf;
+}
+
+.container .card .layer .spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  border: 25px solid pink;
+  border-top-color: #91ff73;
+  border-right-color: #d0ff73;
+  border-bottom-color: #73ecff;
+  border-left-color: #ffc773;
+  border-radius: 50%;
+  -webkit-box-shadow: -5px -5px 20px #ffffff, 10px 10px 20px #cfcfcf, inset -5px -5px 20px #ffffff, inset 10px 10px 20px #cfcfcf;
+          box-shadow: -5px -5px 20px #ffffff, 10px 10px 20px #cfcfcf, inset -5px -5px 20px #ffffff, inset 10px 10px 20px #cfcfcf;
+  -webkit-animation: spin .6s infinite linear;
+          animation: spin .6s infinite linear;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: translate(-50%, -50%) rotate(0);
+            transform: translate(-50%, -50%) rotate(0);
+  }
+  100% {
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+            transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: translate(-50%, -50%) rotate(0);
+            transform: translate(-50%, -50%) rotate(0);
+  }
+  100% {
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+            transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 .container .card .span .counter {
@@ -62,7 +118,7 @@
   font-family: 'Ubuntu',sans-serif;
   color: #7b7b7b;
   text-shadow: 1px 0px 10px rgba(37, 37, 37, 0.2);
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   line-height: 2rem;
 }
 
