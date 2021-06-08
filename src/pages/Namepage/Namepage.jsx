@@ -7,7 +7,7 @@ const Namepage = () => {
 
     function inputChange(e){
         setName(e.target.value);
-        console.log(name)
+
     }
     function onClickHandler(){
         localStorage.setItem('username',name)
@@ -17,10 +17,12 @@ const Namepage = () => {
         <div className={`container ${NamepageCSS.container}`}>
             <div className={`card ${NamepageCSS.card}`}>
                 <h1 className={NamepageCSS.h1}>What's Your Name?</h1>
-                <input type="text" onChange={inputChange} value={name} className={`form-control mt-2 mb-3 ${NamepageCSS.input}`} placeholder="Enter your name" spellCheck="false" required />
-                <Link to='/main'>
-                    <button onClick={onClickHandler} className={`btn btn-primary ${NamepageCSS.btn}`}>Remember Me</button>
-                </Link>
+                <form>
+                    <input type="text" onChange={inputChange} value={name} className={`form-control mt-2 mb-3 ${NamepageCSS.input}`} placeholder="Enter your name" spellCheck="false" required />
+                    <Link to='/main'>
+                        <button type="submit" onClick={onClickHandler} className={`btn btn-primary ${NamepageCSS.btn}`}>Remember Me</button>
+                    </Link>
+                </form>
             </div>
         </div>
     )
