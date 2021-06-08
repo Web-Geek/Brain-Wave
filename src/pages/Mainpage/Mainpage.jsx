@@ -10,19 +10,17 @@ const Mainpage = () => {
     // State for Counter
     const [counter, setCounter] = useState('')
     const [selectedImgColor, setSelectedImgColor] = useState(["#eeeeee", "#eeeeee", "#eeeeee", "#eeeeee"])
-    const [result, setResult] = useState(false);
     const [msg, setMsg] = useState('Brain Wave');
-    const [selectedImgNo, setSelectedImgNo] = useState('')
-
     const [data, setData] = useState([])
     const [images, setImages] = useState([])
     const [votes, setVotes] = useState([0,0,0,0])
     const [display, setDisplay] = useState([0,0,0,0])
     const [selected, setSelected] = useState(false)
+    const [click,setClick] = useState(false)
 
     const initial = useRef(true);
 
-
+    const imgurl = "https://thumb.fakeface.rest/thumb_"
     var sum = votes.reduce(function(a, b){
         return a + b;
     }, 0);
@@ -44,8 +42,7 @@ const Mainpage = () => {
 
     function updateDataBase() {
         var [qNo, rem] = getCounter()
-        console.log('test',votes)
-        const ref = firebase.database().ref('data').child(1);
+        const ref = firebase.database().ref('data').child(qNo);
         ref.update({
             ...data,
             "votes": votes
@@ -58,25 +55,22 @@ const Mainpage = () => {
 
     useEffect(() => {
         var qNo = getCounter()[0]
-        const ref = firebase.database().ref('data').child(1);
+        const ref = firebase.database().ref('data').child(qNo);
         ref.on('value', (snapshot) => {
+
             const all = snapshot.val();
-            console.log(all)
             setVotes(all.votes)
             setData(all);
             setImages(all.images)
         });
     }, []);
 
-    const imgurl = "https://thumb.fakeface.rest/thumb_"
-
     function updataData() {
         var qNo = getCounter()[0]
-        const ref = firebase.database().ref('data').child(1);
+        const ref = firebase.database().ref('data').child(qNo);
         ref.on('value', (snapshot) => {
             const all = snapshot.val();
             setVotes(all.votes)
-            console.log(all)
             setData(all);
             setImages(all.images)
         });
@@ -88,19 +82,6 @@ const Mainpage = () => {
         setInterval(() => {
             let remainder = getCounter()[1];
             setCounter(remainder);
-            if (remainder === 29) {
-                setMsg('BRAIN WAVE')
-                updataData()
-                // setVotes([0, 0, 0, 0])
-                setSelected(false)
-            }
-            if (remainder === 5) {
-                setSelectedImgColor(["#eeeeee", "#eeeeee", "#eeeeee", "#eeeeee"])
-                setDisplay(p=>votes)
-                // setVotes([Math.random() * 50, Math.random() * 20, Math.random() * 40, Math.random() * 80])
-                setMsg('Result')
-
-            }
         }, 1000)
     }, [])
 
@@ -114,6 +95,7 @@ const Mainpage = () => {
             var uname= localStorage.getItem('username')
             setMsg('selected')
             setVotes(prev=>{prev[img_no]+=1;return prev})
+            setClick(true)
         }
     }
 
@@ -122,9 +104,26 @@ const Mainpage = () => {
             initial.current = false;
         }
         else{
-            updateDataBase();
+            if(click === true){
+                updateDataBase();
+                setClick(false)
+            }
+            if (counter === 29) {
+                setMsg('BRAIN WAVE')
+                setDisplay([0,0,0,0])
+                updataData()
+                setSelected(false)
+
+            }
+            if (counter === 5) {
+                setSelectedImgColor(["#eeeeee", "#eeeeee", "#eeeeee", "#eeeeee"])
+                setDisplay(votes)
+                setMsg('Result')
+                console.log(votes);
+                updataData()
+            }
         }
-    },[votes])
+    },[click,counter])
 
 
 
@@ -219,7 +218,7 @@ const Mainpage = () => {
                         </div>
                     </div>
                 </div>
-                <p className={MainpageCSS.p}>{votes}</p>
+                <p className={MainpageCSS.p}>{msg}</p>
             </div>
         </div>
     )
