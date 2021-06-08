@@ -80,13 +80,11 @@
         font-family: 'Oxygen',sans-serif;
         color: #fff;
         letter-spacing: .5px;
-        animation: fade-in .8s ease;
         opacity: 1;
         &:hover,&:focus-visible,&:focus{
             outline: none;
             background-color: #00ceb9; 
         }
-        animation: from-right .4s linear;
         @keyframes from-right {
             0%{
                 transform: translateX(300px);

@@ -142,11 +142,7 @@
   font-family: 'Oxygen',sans-serif;
   color: #fff;
   letter-spacing: .5px;
-  -webkit-animation: fade-in .8s ease;
-          animation: fade-in .8s ease;
   opacity: 1;
-  -webkit-animation: from-right .4s linear;
-          animation: from-right .4s linear;
 }
 
 .container .card .btn:hover, .container .card .btn:focus-visible, .container .card .btn:focus {

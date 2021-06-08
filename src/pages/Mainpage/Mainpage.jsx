@@ -51,7 +51,7 @@ const Mainpage = () => {
 
     useEffect(() => {
         var qNo = getCounter()[0]
-        const ref = firebase.database().ref('data').child(2);
+        const ref = firebase.database().ref('data').child(qNo);
         ref.on('value', (snapshot) => {
 
             const all = snapshot.val();
@@ -63,7 +63,7 @@ const Mainpage = () => {
 
     function updataData() {
         var qNo = getCounter()[0]
-        const ref = firebase.database().ref('data').child(2);
+        const ref = firebase.database().ref('data').child(qNo);
         ref.on('value', (snapshot) => {
             const all = snapshot.val();
             setVotes(all.votes)
@@ -88,7 +88,6 @@ const Mainpage = () => {
             var img_no = target.alt
             setSelectedImgColor(p => { p[img_no] = "#a6bef7"; return p })
             setSelected(true)
-            var uname = localStorage.getItem('username')
             setMsg("result in last 5 Secs");
             setVotes(prev => { prev[img_no] += 1; return prev })
             setClick(true)
@@ -121,6 +120,7 @@ const Mainpage = () => {
                 }
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [click, counter])
 
 
