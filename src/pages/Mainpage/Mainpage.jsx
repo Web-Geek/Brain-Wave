@@ -142,7 +142,7 @@ const Mainpage = () => {
                         <div className={MainpageCSS.imgdiv}>
                             <CircularProgressbarWithChildren value={display[0]}
                                 maxValue={(display[0] !== 0) ? sum : 1}
-                                // minValue={Math.min(...votes)}
+
                                 styles={{
                                     path: {
                                         // Path color
