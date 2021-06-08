@@ -42,7 +42,7 @@ const Mainpage = () => {
 
     function updateDataBase() {
         var [qNo, rem] = getCounter()
-        const ref = firebase.database().ref('data').child(qNo);
+        const ref = firebase.database().ref('data').child(2);
         ref.update({
             ...data,
             "votes": votes
@@ -55,7 +55,7 @@ const Mainpage = () => {
 
     useEffect(() => {
         var qNo = getCounter()[0]
-        const ref = firebase.database().ref('data').child(qNo);
+        const ref = firebase.database().ref('data').child(2);
         ref.on('value', (snapshot) => {
 
             const all = snapshot.val();
@@ -67,7 +67,7 @@ const Mainpage = () => {
 
     function updataData() {
         var qNo = getCounter()[0]
-        const ref = firebase.database().ref('data').child(qNo);
+        const ref = firebase.database().ref('data').child(2);
         ref.on('value', (snapshot) => {
             const all = snapshot.val();
             setVotes(all.votes)
@@ -106,21 +106,24 @@ const Mainpage = () => {
         else{
             if(click === true){
                 updateDataBase();
-                setClick(false)
             }
             if (counter === 29) {
                 setMsg('BRAIN WAVE')
                 setDisplay([0,0,0,0])
                 updataData()
                 setSelected(false)
-
             }
-            if (counter === 5) {
-                setSelectedImgColor(["#eeeeee", "#eeeeee", "#eeeeee", "#eeeeee"])
-                setDisplay(votes)
-                setMsg('Result')
-                console.log(votes);
-                updataData()
+            if (counter === 0){
+                setClick(false)
+            }
+            if (counter <= 5) {
+                if (click === true){
+                    setSelectedImgColor(["#eeeeee", "#eeeeee", "#eeeeee", "#eeeeee"])
+                    setDisplay(votes)
+                    setMsg('Result')
+                    console.log(votes);
+                    updataData()
+                }
             }
         }
     },[click,counter])
@@ -139,7 +142,7 @@ const Mainpage = () => {
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
                             <CircularProgressbarWithChildren value={display[0]}
-                                maxValue={sum}
+                                maxValue={(display[0] !== 0) ? sum : 1}
                                 // minValue={Math.min(...votes)}
                                 styles={{
                                     path: {
@@ -159,7 +162,7 @@ const Mainpage = () => {
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
                             <CircularProgressbarWithChildren value={display[1]}
-                                maxValue={sum}
+                                maxValue={(display[1] !== 0) ? sum : 1}
                                 styles={{
                                     path: {
                                         // Path color
@@ -184,7 +187,7 @@ const Mainpage = () => {
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
                             <CircularProgressbarWithChildren value={display[2]}
-                                maxValue={sum}
+                                maxValue={(display[2] !== 0) ? sum : 1}
                                 styles={{
                                     path: {
                                         // Path color
@@ -202,7 +205,7 @@ const Mainpage = () => {
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
                             <CircularProgressbarWithChildren value={display[3]}
-                                maxValue={sum}
+                                maxValue={(display[3] !== 0) ? sum : 1}
                                 styles={{
                                     path: {
                                         // Path color
