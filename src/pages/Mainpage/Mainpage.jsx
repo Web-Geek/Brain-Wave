@@ -13,15 +13,15 @@ const Mainpage = () => {
     const [msg, setMsg] = useState('Brain Wave');
     const [data, setData] = useState([])
     const [images, setImages] = useState([])
-    const [votes, setVotes] = useState([0,0,0,0])
-    const [display, setDisplay] = useState([0,0,0,0])
+    const [votes, setVotes] = useState([0, 0, 0, 0])
+    const [display, setDisplay] = useState([0, 0, 0, 0])
     const [selected, setSelected] = useState(false)
-    const [click,setClick] = useState(false)
+    const [click, setClick] = useState(false)
 
     const initial = useRef(true);
 
     const imgurl = "https://thumb.fakeface.rest/thumb_"
-    var sum = votes.reduce(function(a, b){
+    var sum = votes.reduce(function (a, b) {
         return a + b;
     }, 0);
 
@@ -41,7 +41,6 @@ const Mainpage = () => {
 
 
     function updateDataBase() {
-        var [qNo, rem] = getCounter()
         const ref = firebase.database().ref('data').child(2);
         ref.update({
             ...data,
@@ -49,9 +48,6 @@ const Mainpage = () => {
         })
 
     }
-    // updateDataBase()
-    
-    
 
     useEffect(() => {
         var qNo = getCounter()[0]
@@ -86,47 +82,46 @@ const Mainpage = () => {
     }, [])
 
     function handleClick(e) {
-    
+
         if (!selected) {
             var target = e.target
             var img_no = target.alt
-            setSelectedImgColor(p=>{p[img_no]="#8c7b7b"; return p})
+            setSelectedImgColor(p => { p[img_no] = "#a6bef7"; return p })
             setSelected(true)
-            var uname= localStorage.getItem('username')
-            setMsg('selected')
-            setVotes(prev=>{prev[img_no]+=1;return prev})
+            var uname = localStorage.getItem('username')
+            setMsg("result in last 5 Secs");
+            setVotes(prev => { prev[img_no] += 1; return prev })
             setClick(true)
         }
     }
 
-    useEffect(()=>{
-        if(initial.current){
+    useEffect(() => {
+        if (initial.current) {
             initial.current = false;
         }
-        else{
-            if(click === true){
+        else {
+            if (click === true) {
                 updateDataBase();
             }
             if (counter === 29) {
                 setMsg('BRAIN WAVE')
-                setDisplay([0,0,0,0])
+                setDisplay([0, 0, 0, 0])
                 updataData()
                 setSelected(false)
             }
-            if (counter === 0){
+            if (counter === 0) {
                 setClick(false)
             }
             if (counter <= 5) {
-                if (click === true){
+                if (click === true) {
                     setSelectedImgColor(["#eeeeee", "#eeeeee", "#eeeeee", "#eeeeee"])
                     setDisplay(votes)
                     setMsg('Result')
-                    console.log(votes);
                     updataData()
                 }
             }
         }
-    },[click,counter])
+    }, [click, counter])
 
 
 
@@ -134,6 +129,10 @@ const Mainpage = () => {
     return (
         <div className={`container ${MainpageCSS.container}`}>
             <div className={`card ${MainpageCSS.card}`}>
+
+                <p className={MainpageCSS.user}>
+                    Hey, {uname}!
+                </p>
 
                 <span className={MainpageCSS.txtspan}>
                     <h4 className={MainpageCSS.h1}>{data.question}</h4>
@@ -152,10 +151,17 @@ const Mainpage = () => {
                                     trail: {
                                         // Trail color
                                         stroke: selectedImgColor[0],
-                                    }
+                                    },
+
                                 }}>
                                 <img src={imgurl + images[0]} alt="0" onClick={handleClick} onError={e => e.target.src = loader} className={MainpageCSS.img} draggable="false" />
                             </CircularProgressbarWithChildren>
+
+                            {(click && counter <= 5) &&
+                                <span className={MainpageCSS.overlay}>
+                                    <p className={MainpageCSS.percentage}>{(Math.round((display[0] / sum) * 100))}%</p>
+                                </span>
+                            }
 
                         </div>
                     </div>
@@ -175,6 +181,11 @@ const Mainpage = () => {
                                 }}>
                                 <img src={imgurl + images[1]} alt="1" onClick={handleClick} onError={e => e.target.src = loader} className={MainpageCSS.img} draggable="false" />
                             </CircularProgressbarWithChildren>
+                            {(click && counter <= 5) &&
+                                <span className={MainpageCSS.overlay}>
+                                    <p className={MainpageCSS.percentage}>{(Math.round((display[1] / sum) * 100))}%</p>
+                                </span>
+                            }
                         </div>
                     </div>
                 </div>
@@ -187,7 +198,7 @@ const Mainpage = () => {
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
                             <CircularProgressbarWithChildren value={display[2]}
-                                maxValue={(display[2] !== 0) ? sum : 1}
+                                maxValue={(display[1] !== 0) ? sum : 1}
                                 styles={{
                                     path: {
                                         // Path color
@@ -200,6 +211,11 @@ const Mainpage = () => {
                                 }}>
                                 <img src={imgurl + images[2]} alt="2" onClick={handleClick} onError={e => e.target.src = loader} className={MainpageCSS.img} draggable="false" />
                             </CircularProgressbarWithChildren>
+                            {(click && counter <= 5) &&
+                                <span className={MainpageCSS.overlay}>
+                                    <p className={MainpageCSS.percentage}>{(Math.round((display[2] / sum) * 100))}%</p>
+                                </span>
+                            }
                         </div>
                     </div>
                     <div className="col-6">
@@ -218,6 +234,11 @@ const Mainpage = () => {
                                 }}>
                                 <img src={imgurl + images[3]} alt="3" onClick={handleClick} onError={e => e.target.src = loader} className={MainpageCSS.img} draggable="false" />
                             </CircularProgressbarWithChildren>
+                            {(click && counter <= 5) &&
+                                <span className={MainpageCSS.overlay}>
+                                    <p className={MainpageCSS.percentage}>{(Math.round((display[3] / sum) * 100))}%</p>
+                                </span>
+                            }
                         </div>
                     </div>
                 </div>
