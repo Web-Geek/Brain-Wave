@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MainpageCSS from './MainpageCSS.module.css'
 import 'react-circular-progressbar/dist/styles.css'
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
@@ -16,15 +16,19 @@ const Mainpage = () => {
 
     const [data, setData] = useState([])
     const [images, setImages] = useState([])
-    const [votes, setVotes] = useState([80, 40, 120,160])
+    const [votes, setVotes] = useState([0,0,0,0])
+    const [display, setDisplay] = useState([0,0,0,0])
     const [selected, setSelected] = useState(false)
+
+    const initial = useRef(true);
+
+
     var sum = votes.reduce(function(a, b){
         return a + b;
     }, 0);
 
     // Local Storage
     var uname = localStorage.getItem('username')
-
 
     function getCounter() {
         var d = new Date();
@@ -37,11 +41,28 @@ const Mainpage = () => {
         return [questionNo, remainder]
     }
 
+
+    function updateDataBase() {
+        var [qNo, rem] = getCounter()
+        console.log('test',votes)
+        const ref = firebase.database().ref('data').child(1);
+        ref.update({
+            ...data,
+            "votes": votes
+        })
+
+    }
+    // updateDataBase()
+    
+    
+
     useEffect(() => {
         var qNo = getCounter()[0]
         const ref = firebase.database().ref('data').child(1);
         ref.on('value', (snapshot) => {
             const all = snapshot.val();
+            console.log(all)
+            setVotes(all.votes)
             setData(all);
             setImages(all.images)
         });
@@ -54,7 +75,8 @@ const Mainpage = () => {
         const ref = firebase.database().ref('data').child(1);
         ref.on('value', (snapshot) => {
             const all = snapshot.val();
-            // setVotes(all.votes)
+            setVotes(all.votes)
+            console.log(all)
             setData(all);
             setImages(all.images)
         });
@@ -74,7 +96,7 @@ const Mainpage = () => {
             }
             if (remainder === 5) {
                 setSelectedImgColor(["#eeeeee", "#eeeeee", "#eeeeee", "#eeeeee"])
-
+                setDisplay(p=>votes)
                 // setVotes([Math.random() * 50, Math.random() * 20, Math.random() * 40, Math.random() * 80])
                 setMsg('Result')
 
@@ -91,9 +113,18 @@ const Mainpage = () => {
             setSelected(true)
             var uname= localStorage.getItem('username')
             setMsg('selected')
+            setVotes(prev=>{prev[img_no]+=1;return prev})
         }
-
     }
+
+    useEffect(()=>{
+        if(initial.current){
+            initial.current = false;
+        }
+        else{
+            updateDataBase();
+        }
+    },[votes])
 
 
 
@@ -108,7 +139,7 @@ const Mainpage = () => {
                 <div className="row">
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
-                            <CircularProgressbarWithChildren value={votes[0]}
+                            <CircularProgressbarWithChildren value={display[0]}
                                 maxValue={sum}
                                 // minValue={Math.min(...votes)}
                                 styles={{
@@ -128,7 +159,7 @@ const Mainpage = () => {
                     </div>
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
-                            <CircularProgressbarWithChildren value={votes[1]}
+                            <CircularProgressbarWithChildren value={display[1]}
                                 maxValue={sum}
                                 styles={{
                                     path: {
@@ -153,7 +184,7 @@ const Mainpage = () => {
                 <div className="row mt-4">
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
-                            <CircularProgressbarWithChildren value={votes[2]}
+                            <CircularProgressbarWithChildren value={display[2]}
                                 maxValue={sum}
                                 styles={{
                                     path: {
@@ -171,7 +202,7 @@ const Mainpage = () => {
                     </div>
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
-                            <CircularProgressbarWithChildren value={votes[3]}
+                            <CircularProgressbarWithChildren value={display[3]}
                                 maxValue={sum}
                                 styles={{
                                     path: {
@@ -188,7 +219,7 @@ const Mainpage = () => {
                         </div>
                     </div>
                 </div>
-                <p className={MainpageCSS.p}>{msg}</p>
+                <p className={MainpageCSS.p}>{votes}</p>
             </div>
         </div>
     )
