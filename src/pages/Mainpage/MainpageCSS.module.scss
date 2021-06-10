@@ -10,8 +10,13 @@
         box-shadow:  8px 8px 21px #cfcfcf,
                     -8px -8px 21px #ffffff;
         border: none;
+
         .span{
+            position: relative;
             .counter{
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
                 font-family: 'Lato',sans-serif;
                 text-align: center;
                 letter-spacing: 2px;
@@ -22,9 +27,6 @@
                             10px 10px 15px rgba(202, 202, 202, 0.3),
                             inset -10px -10px 15px  rgba(255, 255, 255, 0.6),
                             inset 10px 10px 15px rgba(202, 202, 202, 0.3);
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
                 padding: 5px 8px;
                 border-radius: 5px;
             }
@@ -98,7 +100,7 @@
                 top: 50%;
                 transform: translate(-50%,-50%);
                 cursor: pointer;
-                background-color: rgba(255, 255, 255, 0.8);
+                background-color: rgba(255, 255, 255, 0.85);
                 z-index: 100;
                 border-radius: 50%;
                 text-align: center;
@@ -157,6 +159,31 @@
             .imgdiv{
                 width: 125px;
                 height: 125px;
+            }
+        }
+    }
+}
+@media screen and (min-width:991px){
+    .container{
+        .card{
+            padding: 30px 60px 0px 60px;
+            .span{
+                .counter{
+                    font-size: 1.2rem;
+                }
+            }
+            .user{
+                width: 394px;
+            }
+            .txtspan{
+                width: 394px;
+                .h1{
+                    font-size: 1.4rem;
+                }
+            }
+            .imgdiv{
+                width: 175px;
+                height: 175px;
             }
         }
     }

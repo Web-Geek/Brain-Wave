@@ -66,6 +66,14 @@ const Mainpage = () => {
         const ref = firebase.database().ref('data').child(qNo);
         ref.on('value', (snapshot) => {
             const all = snapshot.val();
+            var all_zero = all.votes.every(ele => ele === 0)
+            // if (all_zero) {
+            //     var randomVals = [[1, 2, 3, 4], [20, 30, 21, 15], [3, 2, 7, 1], [7, 1, 4, 10]]
+            //     setVotes(randomVals[0])
+            // }
+            // else {
+            //     setVotes(all.votes)
+            // }
             setVotes(all.votes)
             setData(all);
             setImages(all.images)
@@ -102,6 +110,15 @@ const Mainpage = () => {
             if (click === true) {
                 updateDataBase();
             }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [click])
+
+    useEffect(() => {
+        if (initial.current) {
+            initial.current = false;
+        }
+        else {
             if (counter === 29) {
                 setMsg('BRAIN WAVE')
                 setDisplay([0, 0, 0, 0])
@@ -122,7 +139,6 @@ const Mainpage = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [click, counter])
-
 
 
     // JSX
