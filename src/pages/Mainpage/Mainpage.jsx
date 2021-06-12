@@ -17,13 +17,14 @@ const Mainpage = () => {
     const [display, setDisplay] = useState([0, 0, 0, 0])
     const [selected, setSelected] = useState(false)
     const [click, setClick] = useState(false)
+    const [sum,setSum] = useState(0);
 
     const initial = useRef(true);
 
     const imgurl = "https://thumb.fakeface.rest/thumb_"
-    var sum = votes.reduce(function (a, b) {
-        return a + b;
-    }, 0);
+    // var sum = votes.reduce(function (a, b) {
+    //     return a + b;
+    // }, 0);
 
     // Local Storage
     var uname = localStorage.getItem('username')
@@ -41,12 +42,12 @@ const Mainpage = () => {
 
 
     function updateDataBase() {
-        const ref = firebase.database().ref('data').child(2);
+        var qNo = getCounter()[0]
+        const ref = firebase.database().ref('data').child(qNo);
         ref.update({
             ...data,
             "votes": votes
         })
-
     }
 
     useEffect(() => {
@@ -109,6 +110,9 @@ const Mainpage = () => {
         else {
             if (click === true) {
                 updateDataBase();
+                setSum(votes.reduce((a,b)=>{
+                    return a+b
+                },0))
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
